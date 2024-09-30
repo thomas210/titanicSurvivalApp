@@ -78,48 +78,48 @@ if submit_button:
     with st.spinner(text="In progress"):
         time.sleep(3)
     
-    prediction = model.predict(input_data)
-    result = 'Sobreviveu' if prediction[0] == 1 else 'Não Sobreviveu'
+    # prediction = model.predict(input_data)
+    # result = 'Sobreviveu' if prediction[0] == 1 else 'Não Sobreviveu'
 
     # Exibir o resultado da previsão
-    st.subheader(f'Resultado: {result}')
+    # st.subheader(f'Resultado: {result}')
     
-    # # Obter as probabilidades de sobrevivência
-    # prediction_proba = model.predict_proba(input_data)[0][1]  # Pega a probabilidade de "sobreviveu"
-    # st.subheader(f'Probabilidade de Sobrevivência: {prediction_proba * 100:.2f}%')
+    # Obter as probabilidades de sobrevivência
+    prediction_proba = model.predict_proba(input_data)[0][1]  # Pega a probabilidade de "sobreviveu"
+    st.subheader(f'Probabilidade de Sobrevivência: {prediction_proba * 100:.2f}%')
 
-    # if (prediction_proba < 0.4):
-    #     message = "Infelizmente suas changes não são boas companheiro, espero que saiba nadar e aguente o frio!🥶"
-    # elif (prediction_proba < 0.6):
-    #     message = "O futuro é incerto para você, desejo boa sorte na sua fuga!😐"
-    # else:
-    #     message = "As chances estão do seu lado, parece que consiguirá sobreviver no fim, que bom!😁"
+    if (prediction_proba < 0.4):
+        message = "Infelizmente suas changes não são boas companheiro, espero que saiba nadar e aguente o frio!🥶"
+    elif (prediction_proba < 0.6):
+        message = "O futuro é incerto para você, desejo boa sorte na sua fuga!😐"
+    else:
+        message = "As chances estão do seu lado, parece que consiguirá sobreviver no fim, que bom!😁"
 
-    # # Gráfico de velocímetro (gauge chart) usando Plotly
-    # fig = go.Figure(go.Indicator(
-    #     mode="gauge+number",
-    #     value=0,#prediction_proba * 100,  # Mostrar a probabilidade em porcentagem
-    #     title={'text': "Probabilidade de Sobrevivência"},
-    #     gauge={
-    #         'bar': {'color': "darkblue"},
-    #         'axis': {'range': [0, 100]},
-    #         'steps': [
-    #             {'range': [0, 50], 'color': "red"},
-    #             {'range': [40, 60], 'color': "yellow"},
-    #             {'range': [60, 100], 'color': "lightgreen"}
-    #         ]
-    #     }
-    # ))
+    # Gráfico de velocímetro (gauge chart) usando Plotly
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=0,#prediction_proba * 100,  # Mostrar a probabilidade em porcentagem
+        title={'text': "Probabilidade de Sobrevivência"},
+        gauge={
+            'bar': {'color': "darkblue"},
+            'axis': {'range': [0, 100]},
+            'steps': [
+                {'range': [0, 50], 'color': "red"},
+                {'range': [40, 60], 'color': "yellow"},
+                {'range': [60, 100], 'color': "lightgreen"}
+            ]
+        }
+    ))
 
-    # # Exibir o gráfico no Streamlit
-    # gauge_placeholder = modal_dialog(fig, prediction_proba, message)
-    # fig.update_traces(value=prediction_proba * 100)
-    # st.plotly_chart(fig)
+    # Exibir o gráfico no Streamlit
+    gauge_placeholder = modal_dialog(fig, prediction_proba, message)
+    fig.update_traces(value=prediction_proba * 100)
+    st.plotly_chart(fig)
     
-    # if (prediction_proba < 0.4):
-    #     st.error(message)
-    # elif (prediction_proba < 0.6):
-    #     st.warning(message)
-    # else:
-    #     st.balloons()
-    #     st.success(message)
+    if (prediction_proba < 0.4):
+        st.error(message)
+    elif (prediction_proba < 0.6):
+        st.warning(message)
+    else:
+        st.balloons()
+        st.success(message)
